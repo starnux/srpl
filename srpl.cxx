@@ -402,6 +402,16 @@ int execute(string expr)
 
 int main(int argc, char **argv)
 {
+	if(argc == 2 && strcmp(argv[1], "-h")==0)
+	{
+		cout << "Superna's Reverse Polish Language" << endl
+		     << "Usage : srpl [-h] [number's]" << endl
+		     << endl << "   -h   Show this help" << endl
+		     << endl << "If you want more : <superna@na-prod.com>"
+		     << endl;
+		return 1;
+	}
+	
 	// Put parameters on the stack
 	int param;
 	for(int i = 1 ; i < argc ; ++i)
