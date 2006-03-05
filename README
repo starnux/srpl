@@ -1,0 +1,15 @@
+Superna's Reverse Polish Language
+=================================
+
+ This language is based on a "Prologin" Exercise, it is a primary
+ language using a long integer stack.
+
+ Look at scripts, you can use them with command line :
+ srpl 1 10 < power
+
+ Values on the command line are pushed on the stack.
+ You can type the program by hand, it may finish by EOL (ctrl+D) or with a 
+ line with only "."
+
+========================
+Neil "Superna" ARMSTRONG
