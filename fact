@@ -1,0 +1,6 @@
+# Calcule une factorielle du dernier parametre en ligne de commande
+1 SWAP
+for var 1 -
+	var *
+next
+PRINTLN

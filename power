@@ -1,0 +1,7 @@
+# usage srpl val power < power
+SWAP >val
+1 SWAP
+for i 1 -
+	val *
+next
+PRINTLN
