@@ -33,6 +33,8 @@ using namespace std;
 
 map<string,long> vars;
 vector<long> stack;
+vector<long> tstack;
+vector<char> cstack;
 map<string,string> procs;
 
 int execute(string expr);
@@ -122,6 +124,12 @@ int iscmd(string & istr)
 		return 6;
 	if(istr=="FLUSH")
 		return 7;
+	if(istr==">>")
+		return 8;
+	if(istr=="<<")
+		return 9;
+	if(istr=="DISP")
+		return 10;
 	return -1;
 }
 
@@ -152,6 +160,18 @@ int issetvar(string & istr)
 {
 	if(istr[0] == '>')
 		return 0;
+	return -1;
+}
+
+int isstring(string & istr)
+{
+	if(istr[0]=='\'')
+	{	
+		if(istr[istr.size()-1]=='\'')
+			return istr.size()-2;
+		else
+			throw Error("Needed second ' for string");
+	}
 	return -1;
 }
 
@@ -214,6 +234,31 @@ void doit(string & code)
 			case 7:
 				stack.clear();
 				break;
+			case 8:
+				if(stack.size()<=0)
+					throw Error("Empty Stack");
+				tstack.push_back(stack.back());
+				stack.pop_back();
+				break;
+			case 9:
+				if(tstack.size()<=0)
+					throw Error("Empty Temp Stack");
+				stack.push_back(tstack.back());
+				tstack.pop_back();
+				break;
+			case 10:
+			{
+				if((unsigned)stack.back() > cstack.size())
+					throw Error("Not enough cars in car stack");
+				string str;
+				for(int i = 0 ; i < stack.back() ; ++i)
+				{
+					str = string(1,cstack.back()) + str;
+					cstack.pop_back();
+				}
+				cout << str;
+				stack.pop_back();
+			} break;
 		}
 		return;
 	}
@@ -225,7 +270,7 @@ void doit(string & code)
 		long op2 = stack.back();
 		stack.pop_back();
 		long op1 = stack.back();
-		stack.pop_back();
+		stack.push_back(op2);
 		switch(id)
 		{
 			case 0:
@@ -276,6 +321,17 @@ void doit(string & code)
 		}
 		return;
         }
+	id=isstring(code);
+	if(id>=0)
+	{
+		for(int i = 1 ; i <= id ; ++i)
+			if(code[i]=='#')
+				cstack.push_back(' ');
+			else
+				cstack.push_back(code[i]);
+		stack.push_back(id);
+		return;
+	}
 	id=issetvar(code);
 	if(id>=0)
 	{
