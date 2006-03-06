@@ -48,8 +48,8 @@ Boucles :
 =========
 * if <condition> then <code1> else <code1> endif
 <code> contient tout type d'instructions sauf les boucles
-si apres la condition, la tete de pile est > 0 execution de code1
-sinon execution de code 2
+si apres la condition, la tete de pile est > 0 (et non vide) 
+execution de code1 sinon execution de code 2
 
 * for <var> start|- end|- <code> next
 execute code avec la variable var prenant les valeurs de start a end

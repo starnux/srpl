@@ -38,6 +38,7 @@ vector<char> cstack;
 map<string,string> procs;
 
 int execute(string expr);
+void callproc(string name);
 
 class Error : public exception
 {
@@ -189,6 +190,11 @@ long get_var(string & var)
 
 void doit(string & code)
 {
+	if(code[0] == '@')
+	{	
+		callproc(code.substr(1));
+		return;
+	}
 	int id = isnum(code);
 	if(id > 0)
 	{	
@@ -390,7 +396,7 @@ void doif(istringstream & code)
 		throw Error("Waiting endif");
 	//Execution
 	doit(condition);
-	if(stack.back() >= 1)
+	if(stack.size()>0 && stack.back() >= 1)
 		doit(corpsthen);
 	else
 		doit(corpselse);
@@ -485,7 +491,7 @@ void dowhile(istringstream & code)
 
 	//Execution
 	doit(condition);
-	while(stack.back() > 0)
+	while(stack.size()>0 && stack.back() > 0)
 	{
 		doit(corps);
 		doit(condition);
@@ -502,8 +508,6 @@ int execute(string expr)
 		code >> instr;
 		if(instr[0] == ':')
 			addproc(code, instr.substr(1));
-		else if(instr[0] == '@')
-			callproc(instr.substr(1));
 		else if(instr == "if")
 			doif(code);
 		else if(instr == "for")
@@ -532,6 +536,15 @@ int main(int argc, char **argv)
 	int param;
 	for(int i = 1 ; i < argc ; ++i)
 	{
+		int len = strlen(argv[i]);
+		//cout << argv[i] << endl;
+		if(argv[i][0] < '0' || argv[i][0] > '9' )
+		{
+			for(int j = 0 ; j < len ; ++j)
+				cstack.push_back(argv[i][j]);
+			stack.push_back(len);
+			continue;
+		}
 		param = atoi(argv[i]);
 		stack.push_back(param);
 	}
