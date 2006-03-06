@@ -16,7 +16,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-/** 	\file 	test8.cxx
+/** 	\file 	srpl.cxx
 	\author Neil "Superna" ARMSTRONG
 	\date 	05/03/2006
 */
@@ -33,6 +33,9 @@ using namespace std;
 
 map<string,long> vars;
 vector<long> stack;
+map<string,string> procs;
+
+int execute(string expr);
 
 class Error : public exception
 {
@@ -382,6 +385,57 @@ void dofor(istringstream & code)
 	}
 }
 
+void callproc(string name)
+{
+	if(procs.find(name) == procs.end())
+		throw Error(string("Unknown Procedure ") + name);
+	execute(procs[name]);
+}
+
+void addproc(istringstream & code, string name)
+{
+	string istr, corps;
+	code >> istr;
+	while(istr != "end" && !code.eof())
+	{
+		corps += " " + istr;
+		code >> istr;
+	}
+	if(istr != "end")
+		throw Error("Waiting end");
+	procs[name] = corps;
+}
+
+void dowhile(istringstream & code)
+{
+	vector<string> condition, corps;
+	string istr;
+	code >> istr;
+	while(istr != "do" && !code.eof())
+	{
+		condition.push_back(istr);
+		code >> istr;
+	}
+	if(code.eof())
+		throw Error("Waiting do");
+	code >> istr;
+	while(istr != "do" && !code.eof())
+	{
+		corps.push_back(istr);
+		code >> istr;
+	}
+	if(istr != "done")
+		throw Error("Waiting done");
+
+	//Execution
+	doit(condition);
+	while(stack.back() > 0)
+	{
+		doit(corps);
+		doit(condition);
+	}
+}
+
 int execute(string expr)
 {
 	istringstream code(expr);
@@ -390,10 +444,16 @@ int execute(string expr)
 	while(!code.eof())
 	{
 		code >> instr;
-		if(instr == "if")
+		if(instr[0] == ':')
+			addproc(code, instr.substr(1));
+		else if(instr[0] == '@')
+			callproc(instr.substr(1));
+		else if(instr == "if")
 			doif(code);
 		else if(instr == "for")
 			dofor(code);
+		else if(instr == "while")
+			dowhile(code);
 		else
 			doit(instr);
 	}
