@@ -1,0 +1,69 @@
+Doc : Superna's Reverse Polish Language
+=======================================
+
+Nombre :
+========
+decimal : [0-9]+
+hexadecimal : ([0-9]|[0-A])+[hH]
+octal : [0-7]+[oO]
+binaire : [0-1]+[bB]
+
+Operations : depile les deux operandes et empile le resultat
+============
++
+-
+*
+/
+
+Logique : depile les deux operandes et empile le resultat (1 true, 0 false)
+=========
+>
+<
+<>
+=
+>=
+=<
+
+Fonctions :
+===========
+DROP : supprime la tete de pile 
+DUP : duplique la tete de pile
+SWAP : inverse les deux tete de pile
+PRINT : affiche la tete de pile
+PRINTLN : affiche la tete de pile avec retour de ligne
+NLINE : affiche un retour de ligne
+FLUSH : vide la pile
+PSTACK : affiche le contenu de la pile {([0-9]+;)*[0-9]*}
+
+Boucles :
+=========
+* if <condition> then <code1> else <code1> endif
+<code> contient tout type d'instructions sauf les boucles
+si apres la condition, la tete de pile est > 0 execution de code1
+sinon execution de code 2
+
+* for <var> start|- end|- <code> next
+execute code avec la variable var prenant les valeurs de start a end
+start et/ou end peuvent prendre les valeurs de tete de pile en mettant -
+exemple :
+for i 1 10 i PRINTLN next
+1 10 for i - - i PRINTLN next
+10 for i 1 - i PRINTLN next
+
+* while <condition> do <code> next
+Execution code tant qu'apres condition la tete de pile vaut > 0
+
+Procedures :
+============
+:nom <code> end
+Ajoute la procedure de nom "nom"
+@nom
+Appelle la procedure de nom "nom"
+Les procedures peuvent contenir des boucles
+Exemple :
+:superproc 1 PRINTLN end
+@superproc
+
+
+========================
+Neil "Superna" ARMSTRONG
