@@ -60,7 +60,7 @@ for i 1 10 i PRINTLN next
 10 for i 1 - i PRINTLN next
 
 * while <condition> do <code> next
-Execution code tant qu'apres condition la tete de pile vaut > 0
+Execution code tant qu'apres condition la tete de pile (et non vide) vaut > 0
 
 Procedures :
 ============
