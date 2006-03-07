@@ -1,6 +1,6 @@
-# Usage : srpl [list] size < tri_bulle
+# Usage : srpl [list] < tri_bulle
 
->size size
+$ >size
 
 :test_swap
 	if > then DROP SWAP else DROP endif
@@ -17,7 +17,7 @@ end
 	next
 end
 
-for i 1 -
+size for i 1 -
 	@boucle
 next
 

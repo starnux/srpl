@@ -43,6 +43,8 @@ PSTACK : affiche le contenu de la pile {([0-9]+;)*[0-9]*}
 >> : depile de la stack principale et empile sur la stack temporaire
 << : depile de la stack temporaire et empile sur la stack principale
 DISP : affiche le nombre de characteres du nombre en tete de pile principale
+PTSTACK : affiche le contenu de la pile temporaire
+$ : empile la taille de la pile dans la pile
 
 Boucles :
 =========

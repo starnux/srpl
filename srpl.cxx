@@ -144,6 +144,8 @@ int iscmd(string & istr)
 		return 10;
 	if(istr=="PTSTACK")
 		return 11;
+	if(istr=="$")
+		return 12;
 	return -1;
 }
 
@@ -272,6 +274,8 @@ void doit(string & code)
 			} break;
 			case 11:
 				print_stack(tstack); break;
+			case 12:
+				stack.push_back(stack.size()); break;
 		}
 		return;
 	}
