@@ -57,6 +57,17 @@ class Error : public exception
 		virtual ~Error() throw() {}
 };
 
+void print_stack(vector<long> & stack)
+{
+	cout << '{';
+	for(size_t i = 0 ; i < stack.size() ; ++i)
+	if(i != stack.size()-1)
+		cout << stack[i] << ';';
+	else
+		cout << stack[i];
+	cout << "}" << endl;
+}
+
 int ascii2num(char letter)
 {
 	if(letter >= '0' && letter <='9')
@@ -131,6 +142,8 @@ int iscmd(string & istr)
 		return 9;
 	if(istr=="DISP")
 		return 10;
+	if(istr=="PTSTACK")
+		return 11;
 	return -1;
 }
 
@@ -228,15 +241,7 @@ void doit(string & code)
 				cout << stack.back() << endl;
 				break;
 			case 6:
-			{
-				cout << '{';
-				for(size_t i = 0 ; i < stack.size() ; ++i)
-					if(i != stack.size()-1)
-						cout << stack[i] << ';';
-					else
-						cout << stack[i];
-				cout << "}" << endl;
-			} break;
+				print_stack(stack); break;
 			case 7:
 				stack.clear();
 				break;
@@ -265,6 +270,8 @@ void doit(string & code)
 				cout << str;
 				stack.pop_back();
 			} break;
+			case 11:
+				print_stack(tstack); break;
 		}
 		return;
 	}
