@@ -1,0 +1,24 @@
+# Usage : srpl [list] size < tri_bulle
+
+>size size
+
+:test_swap
+	if > then DROP SWAP else DROP endif
+end
+
+:boucle
+	size i - for j 1 -
+		@test_swap
+		>>
+	next
+	size i - for j 1 -
+		<<
+		@test_swap
+	next
+end
+
+for i 1 -
+	@boucle
+next
+
+PSTACK
